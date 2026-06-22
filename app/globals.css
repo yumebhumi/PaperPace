@@ -1,0 +1,237 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fdfbf7;
+  --surface: #ffffff;
+  --surface-postit: #fff9c4;
+  --surface-muted: #e5e0d8;
+  --foreground: #2d2d2d;
+  --muted: #7b746a;
+  --accent: #ff4d4d;
+  --secondary-accent: #2d5da1;
+  --border: #2d2d2d;
+  --hard-shadow: 3px 3px 0px 0px #2d2d2d;
+  --hard-shadow-lg: 5px 5px 0px 0px #2d2d2d;
+  --hard-shadow-soft: 2px 2px 0px 0px rgba(45, 45, 45, 0.16);
+  --wobbly: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  --wobbly-md: 20px 140px 24px 120px / 24px 18px 140px 20px;
+  --wobbly-card: 26px 180px 32px 160px / 24px 32px 180px 26px;
+  --wobbly-note: 14px 88px 18px 74px / 24px 18px 78px 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--background);
+  background-image:
+    radial-gradient(#e5e0d8 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0));
+  background-size: 24px 24px, 100% 100%;
+  color: var(--foreground);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Kalam", "Comic Sans MS", "Marker Felt", "Bradley Hand", cursive;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+p,
+span,
+label,
+button,
+input,
+select,
+textarea {
+  font-size: 0.95rem;
+}
+
+::selection {
+  background: rgba(255, 77, 77, 0.24);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.paper-shell {
+  position: relative;
+}
+
+.paper-shell::before,
+.paper-shell::after {
+  content: "";
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  border: 2px dashed rgba(45, 45, 45, 0.14);
+  border-radius: var(--wobbly);
+}
+
+.paper-shell::before {
+  top: 28px;
+  right: 18px;
+  height: 88px;
+  width: 88px;
+  transform: rotate(12deg);
+}
+
+.paper-shell::after {
+  bottom: 18px;
+  left: 16px;
+  height: 70px;
+  width: 132px;
+  transform: rotate(-8deg);
+}
+
+.wobbly {
+  border-radius: var(--wobbly);
+}
+
+.wobbly-md {
+  border-radius: var(--wobbly-md);
+}
+
+.wobbly-card {
+  border-radius: var(--wobbly-card);
+}
+
+.wobbly-note {
+  border-radius: var(--wobbly-note);
+}
+
+.hard-shadow {
+  box-shadow: var(--hard-shadow);
+}
+
+.hard-shadow-lg {
+  box-shadow: var(--hard-shadow-lg);
+}
+
+.hard-shadow-soft {
+  box-shadow: var(--hard-shadow-soft);
+}
+
+.scribble-underline {
+  position: relative;
+}
+
+.scribble-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 10px;
+  background:
+    radial-gradient(circle at 6px 6px, transparent 5px, var(--accent) 5px, var(--accent) 6px, transparent 6px)
+      0 0 / 18px 10px repeat-x;
+  opacity: 0.5;
+}
+
+.rough-ring:focus-visible {
+  outline: none;
+  border-color: var(--secondary-accent);
+  box-shadow:
+    0 0 0 3px rgba(45, 93, 161, 0.2),
+    var(--hard-shadow);
+}
+
+.ink-icon {
+  border: 3px solid var(--border);
+  border-radius: 54% 46% 58% 42% / 42% 58% 44% 56%;
+  background: var(--surface);
+  box-shadow: var(--hard-shadow-soft);
+}
+
+.tape {
+  position: relative;
+}
+
+.tape::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  height: 20px;
+  width: 74px;
+  transform: translateX(-50%) rotate(-4deg);
+  background: rgba(180, 180, 180, 0.28);
+  border: 1px dashed rgba(45, 45, 45, 0.16);
+}
+
+.thumbtack {
+  position: relative;
+}
+
+.thumbtack::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  height: 18px;
+  width: 18px;
+  transform: translateX(-50%);
+  border: 2px solid var(--border);
+  border-radius: 9999px;
+  background: var(--accent);
+  box-shadow: 2px 2px 0px 0px #2d2d2d;
+}
+
+@keyframes bookFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pageFlip {
+  0%,
+  65%,
+  100% {
+    opacity: 0;
+    transform: translateX(-12px) skewX(-8deg);
+  }
+  14%,
+  34% {
+    opacity: 0.5;
+    transform: translateX(22px) skewX(-8deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .paper-shell::before,
+  .paper-shell::after {
+    display: none;
+  }
+}

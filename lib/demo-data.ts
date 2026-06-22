@@ -1,0 +1,172 @@
+import { subDays, subHours } from "@/lib/time";
+import type { Achievement, Book, Quote, ReaderSnapshot, ReadingSession } from "@/lib/types";
+
+const books: Book[] = [
+  {
+    id: "book-atomic",
+    title: "Atomic Habits",
+    author: "James Clear",
+    description: "A practical route into systems, consistency, and behavior design.",
+    pageCount: 320,
+    genres: ["Self-help", "Productivity"],
+    routeStops: ["Cue", "Craving", "Response", "Reward", "Identity"],
+    status: "CURRENTLY_READING",
+    currentPage: 214,
+  },
+  {
+    id: "book-martian",
+    title: "The Martian",
+    author: "Andy Weir",
+    description: "A fast, witty survival novel that rewards steady page momentum.",
+    pageCount: 384,
+    genres: ["Science Fiction"],
+    routeStops: ["Launch", "Impact", "Survival", "Contact", "Return"],
+    status: "WANT_TO_READ",
+    currentPage: 0,
+  },
+  {
+    id: "book-circe",
+    title: "Circe",
+    author: "Madeline Miller",
+    description: "A mythic, lyrical read with strong quote potential and mood swings.",
+    pageCount: 408,
+    genres: ["Fantasy", "Literary"],
+    routeStops: ["Exile", "Craft", "Visitors", "Motherhood", "Release"],
+    status: "FINISHED",
+    currentPage: 408,
+  },
+];
+
+const sessions: ReadingSession[] = [
+  {
+    id: "session-1",
+    bookId: "book-atomic",
+    bookTitle: "Atomic Habits",
+    startedAt: subHours(2).toISOString(),
+    endedAt: subHours(1.5).toISOString(),
+    durationMinutes: 30,
+    pagesRead: 18,
+    paceSecondsPerPage: 100,
+    mood: "Focused",
+    focusScore: 86,
+  },
+  {
+    id: "session-2",
+    bookId: "book-atomic",
+    bookTitle: "Atomic Habits",
+    startedAt: subDays(1).toISOString(),
+    endedAt: subDays(1, -0.4).toISOString(),
+    durationMinutes: 24,
+    pagesRead: 12,
+    paceSecondsPerPage: 120,
+    mood: "Calm",
+    focusScore: 80,
+  },
+  {
+    id: "session-3",
+    bookId: "book-circe",
+    bookTitle: "Circe",
+    startedAt: subDays(2).toISOString(),
+    endedAt: subDays(2, -0.55).toISOString(),
+    durationMinutes: 33,
+    pagesRead: 20,
+    paceSecondsPerPage: 99,
+    mood: "Immersed",
+    focusScore: 92,
+  },
+  {
+    id: "session-4",
+    bookId: "book-circe",
+    bookTitle: "Circe",
+    startedAt: subDays(4).toISOString(),
+    endedAt: subDays(4, -0.4).toISOString(),
+    durationMinutes: 24,
+    pagesRead: 14,
+    paceSecondsPerPage: 103,
+  },
+];
+
+const achievements: Achievement[] = [
+  {
+    id: "achievement-1",
+    key: "first-session",
+    name: "First Mile",
+    description: "Completed your first reading session.",
+    icon: "Milestone",
+    unlocked: true,
+  },
+  {
+    id: "achievement-2",
+    key: "streak-7",
+    name: "Seven-Day Rhythm",
+    description: "Read seven days in a row.",
+    icon: "Flame",
+    unlocked: true,
+  },
+  {
+    id: "achievement-3",
+    key: "pages-500",
+    name: "Page Builder",
+    description: "Read 500 pages total.",
+    icon: "BookOpen",
+    unlocked: false,
+  },
+];
+
+const quotes: Quote[] = [
+  {
+    id: "quote-1",
+    bookId: "book-circe",
+    quoteText: "I learned to weave my own spells from what the world had left me.",
+    pageNumber: 208,
+  },
+  {
+    id: "quote-2",
+    bookId: "book-atomic",
+    quoteText: "Every action you take is a vote for the type of person you wish to become.",
+    pageNumber: 37,
+  },
+];
+
+export const demoSnapshot: ReaderSnapshot = {
+  user: {
+    id: "user-demo",
+    displayName: "Bhumika",
+    currentStreak: 6,
+    bestStreak: 11,
+    totalPages: 684,
+    totalMinutes: 1060,
+    totalSessions: 28,
+    booksFinished: 3,
+    averagePace: 104,
+    readingGoalValue: 5,
+  },
+  books,
+  currentBook: books[0],
+  sessions,
+  achievements,
+  quotes,
+  weeklyPages: [
+    { day: "Mon", pages: 12 },
+    { day: "Tue", pages: 18 },
+    { day: "Wed", pages: 20 },
+    { day: "Thu", pages: 0 },
+    { day: "Fri", pages: 16 },
+    { day: "Sat", pages: 24 },
+    { day: "Sun", pages: 18 },
+  ],
+  heatmap: [
+    { day: "Mon", sessions: 1 },
+    { day: "Tue", sessions: 1 },
+    { day: "Wed", sessions: 2 },
+    { day: "Thu", sessions: 0 },
+    { day: "Fri", sessions: 1 },
+    { day: "Sat", sessions: 1 },
+    { day: "Sun", sessions: 1 },
+  ],
+  genrePace: [
+    { genre: "Self-help", pace: 104 },
+    { genre: "Science Fiction", pace: 88 },
+    { genre: "Fantasy", pace: 110 },
+  ],
+};

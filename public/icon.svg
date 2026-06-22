@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="PaperPace">
+  <rect width="128" height="128" rx="28" fill="#F6F1E8"/>
+  <path d="M28 30c0-4.4 3.6-8 8-8h23c8.6 0 17 2.2 24.4 6.5L92 33v58.5l-8.6-4.5A44 44 0 0 0 59 80.5H36a8 8 0 0 0-8 8V30Z" fill="#355C4B"/>
+  <path d="M100 98H42c-7.7 0-14 6.3-14 14h58c7.7 0 14-6.3 14-14Z" fill="#C96F4A"/>
+  <path d="M55 47h28" stroke="#D4A94D" stroke-linecap="round" stroke-width="6"/>
+  <path d="M55 61h20" stroke="#D4A94D" stroke-linecap="round" stroke-width="6"/>
+</svg>

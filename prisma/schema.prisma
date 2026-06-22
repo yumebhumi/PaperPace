@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserBookStatus {
+  WANT_TO_READ
+  CURRENTLY_READING
+  FINISHED
+}
+
+enum ActivityType {
+  SESSION_COMPLETED
+  BOOK_FINISHED
+  STREAK_MILESTONE
+  ACHIEVEMENT_UNLOCKED
+}
+
+model User {
+  id                  String            @id @default(cuid())
+  clerkUserId         String            @unique
+  email               String?           @unique
+  username            String?           @unique
+  displayName         String
+  avatarUrl           String?
+  bio                 String?
+  timezone            String            @default("UTC")
+  readingGoalType     String            @default("sessions_per_week")
+  readingGoalValue    Int               @default(5)
+  preferredReminder   String            @default("20:00")
+  currentStreak       Int               @default(0)
+  bestStreak          Int               @default(0)
+  lastSessionDate     DateTime?
+  totalPages          Int               @default(0)
+  totalMinutes        Int               @default(0)
+  totalSessions       Int               @default(0)
+  booksFinished       Int               @default(0)
+  averagePace         Float             @default(0)
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  userBooks           UserBook[]
+  readingSessions     ReadingSession[]
+  streak              Streak?
+  quotes              Quote[]
+  stats               UserStats?
+  activities          FriendActivity[]  @relation("ActorActivities")
+  targetActivities    FriendActivity[]  @relation("TargetActivities")
+  userAchievements    UserAchievement[]
+}
+
+model Book {
+  id               String           @id @default(cuid())
+  title            String
+  author           String
+  coverUrl         String?
+  description      String?
+  pageCount        Int
+  publisher        String?
+  publishedYear    Int?
+  genres           String[]
+  isbn             String?
+  routeStops       String[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  userBooks        UserBook[]
+  readingSessions  ReadingSession[]
+  quotes           Quote[]
+}
+
+model UserBook {
+  id             String           @id @default(cuid())
+  userId         String
+  bookId         String
+  status         UserBookStatus   @default(WANT_TO_READ)
+  currentPage    Int              @default(0)
+  lastReadPage   Int              @default(0)
+  personalRating Int?
+  startDate      DateTime?
+  finishDate     DateTime?
+  source         String           @default("manual")
+  isOwned        Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book           Book             @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  sessions       ReadingSession[]
+  quotes         Quote[]
+
+  @@unique([userId, bookId])
+}
+
+model ReadingSession {
+  id                 String    @id @default(cuid())
+  userId             String
+  bookId             String
+  userBookId         String
+  startedAt          DateTime
+  endedAt            DateTime
+  durationSeconds    Int
+  startPage          Int
+  endPage            Int
+  pagesRead          Int
+  paceSecondsPerPage Float
+  mood               String?
+  focusScore         Int?
+  notes              String?
+  createdAt          DateTime  @default(now())
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book               Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  userBook           UserBook  @relation(fields: [userBookId], references: [id], onDelete: Cascade)
+}
+
+model Streak {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  currentCount      Int      @default(0)
+  bestCount         Int      @default(0)
+  lastQualifiedDate DateTime?
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Quote {
+  id           String    @id @default(cuid())
+  userId       String
+  bookId       String
+  userBookId   String
+  quoteText    String
+  pageNumber   Int?
+  chapterLabel String?
+  note         String?
+  imageCardUrl String?
+  createdAt    DateTime  @default(now())
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book         Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  userBook     UserBook  @relation(fields: [userBookId], references: [id], onDelete: Cascade)
+}
+
+model UserStats {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  weekPages         Int      @default(0)
+  monthPages        Int      @default(0)
+  yearPages         Int      @default(0)
+  averageSessionMin Float    @default(0)
+  activeDays        Int      @default(0)
+  weeklyGoal        Int      @default(5)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model FriendActivity {
+  id           String       @id @default(cuid())
+  actorUserId  String
+  targetUserId String?
+  activityType ActivityType
+  entityType   String
+  entityId     String
+  metadataJson Json?
+  createdAt    DateTime     @default(now())
+  actor        User         @relation("ActorActivities", fields: [actorUserId], references: [id], onDelete: Cascade)
+  target       User?        @relation("TargetActivities", fields: [targetUserId], references: [id], onDelete: Cascade)
+}
+
+model Achievement {
+  id               String            @id @default(cuid())
+  key              String            @unique
+  name             String
+  description      String
+  icon             String
+  createdAt        DateTime          @default(now())
+  userAchievements UserAchievement[]
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime    @default(now())
+  metadataJson  Json?
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+}
