@@ -20,11 +20,13 @@ export default async function StatsPage() {
 
   return (
     <div className="space-y-6">
-      <Surface className="p-5 md:p-6" decoration="none">
+      <Surface className="p-5 md:p-6" decoration="washi">
         <SectionHeading
           eyebrow="Stats"
           title="Reading progress"
           description="View pages, pace, and session trends."
+          emoji="📈"
+          tone="yellow"
         />
       </Surface>
       <div className="grid gap-6 xl:grid-cols-2">
@@ -33,6 +35,8 @@ export default async function StatsPage() {
             eyebrow="Weekly pages"
             title="Pages this week"
             description="Review weekly volume."
+            emoji="📊"
+            tone="blue"
           />
           <div className="mt-6">
             <WeeklyPagesChart data={snapshot.weeklyPages} />
@@ -43,6 +47,8 @@ export default async function StatsPage() {
             eyebrow="Pace trends"
             title="Reading pace"
             description="Review recent pace trends."
+            emoji="🐢"
+            tone="mint"
           />
           <div className="mt-6">
             <ReadingPaceTrendsChart data={paceTrendData} />
@@ -54,6 +60,8 @@ export default async function StatsPage() {
           eyebrow="Genre pace"
           title="How your pace shifts by genre"
           description="See where you naturally move faster."
+          emoji="📚"
+          tone="purple"
         />
         <div className="mt-6">
           <GenrePaceChart data={snapshot.genrePace} />

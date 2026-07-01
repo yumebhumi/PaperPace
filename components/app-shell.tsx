@@ -24,10 +24,10 @@ import { SignOutButton, SignedIn, SignedOut, useUser, UserButton } from "@clerk/
 import { cn } from "@/lib/utils";
 
 const appNavItems = [
-  { href: "/dashboard", label: "Dashboard", icon: Flame },
-  { href: "/books", label: "Library", icon: LibraryBig },
-  { href: "/sessions", label: "Sessions", icon: Timer },
-  { href: "/stats", label: "Stats", icon: BookOpen },
+  { href: "/dashboard", label: "Dashboard", icon: Flame, emoji: "🏠", tint: "#ffe0ec" },
+  { href: "/books", label: "Library", icon: LibraryBig, emoji: "📚", tint: "#dbe7ff" },
+  { href: "/sessions", label: "Sessions", icon: Timer, emoji: "⏱️", tint: "#d6f5e3" },
+  { href: "/stats", label: "Stats", icon: BookOpen, emoji: "📊", tint: "#efe1fb" },
 ];
 
 const publicNavItems = [
@@ -400,16 +400,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
 
           <nav className="mt-6 space-y-2">
-            {appNavItems.map(({ href, label, icon: Icon }) => (
+            {appNavItems.map(({ href, label, emoji, tint }) => (
               <Link
                 key={href}
                 href={href}
                 className={cn(
-                  "flex items-center gap-3 border-2 border-[var(--border)] bg-white px-3.5 py-2.5 text-sm text-[var(--foreground)] transition-all duration-100 hover:bg-[var(--surface-postit)] hover:translate-x-[1px] hover:translate-y-[1px] hover:[box-shadow:2px_2px_0px_0px_#2d2d2d] active:translate-x-1 active:translate-y-1 active:shadow-none wobbly-md hard-shadow",
+                  "flex items-center gap-3 border-2 border-[var(--border)] bg-white px-3.5 py-2.5 text-sm font-extrabold text-[var(--foreground)] transition-all duration-100 hover:bg-[var(--surface-postit)] hover:translate-x-[1px] hover:translate-y-[1px] hover:[box-shadow:2px_2px_0px_0px_#2d2d2d] active:translate-x-1 active:translate-y-1 active:shadow-none wobbly-md hard-shadow",
                 )}
               >
-                <span className="ink-icon p-1.5">
-                  <Icon className="h-3.5 w-3.5" strokeWidth={2.7} />
+                <span
+                  className="flex h-7 w-7 items-center justify-center border-2 border-[var(--border)] text-[15px] wobbly-note"
+                  style={{ background: tint, boxShadow: "1.5px 1.5px 0 rgba(45,45,45,0.16)" }}
+                >
+                  {emoji}
                 </span>
                 {label}
               </Link>
@@ -471,15 +474,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           {mobileNavOpen ? (
             <div className="mt-3 border-2 border-[var(--border)] bg-[var(--surface)] p-3 hard-shadow md:hidden wobbly-card">
               <nav className="space-y-2">
-                {appNavItems.map(({ href, label, icon: Icon }) => (
+                {appNavItems.map(({ href, label, emoji, tint }) => (
                   <Link
                     key={href}
                     href={href}
                     onClick={() => setMobileNavOpen(false)}
-                    className="flex items-center gap-3 border-2 border-[var(--border)] bg-white px-3 py-2.5 text-sm text-[var(--foreground)] hard-shadow-soft wobbly-md"
+                    className="flex items-center gap-3 border-2 border-[var(--border)] bg-white px-3 py-2.5 text-sm font-extrabold text-[var(--foreground)] hard-shadow-soft wobbly-md"
                   >
-                    <span className="ink-icon p-1.5">
-                      <Icon className="h-3.5 w-3.5" strokeWidth={2.7} />
+                    <span
+                      className="flex h-7 w-7 items-center justify-center border-2 border-[var(--border)] text-[15px] wobbly-note"
+                      style={{ background: tint, boxShadow: "1.5px 1.5px 0 rgba(45,45,45,0.16)" }}
+                    >
+                      {emoji}
                     </span>
                     {label}
                   </Link>

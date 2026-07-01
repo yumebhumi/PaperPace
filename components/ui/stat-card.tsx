@@ -1,35 +1,60 @@
 import type { LucideIcon } from "lucide-react";
 
-import { Surface } from "@/components/ui/surface";
+const tones: Record<string, string> = {
+  pink: "#ffe0ec",
+  yellow: "#fff9c4",
+  mint: "#d6f5e3",
+  blue: "#dbe7ff",
+  purple: "#efe1fb",
+  peach: "#ffe4d6",
+  paper: "#ffffff",
+};
+
+export type StatTone = keyof typeof tones;
 
 export function StatCard({
   label,
   value,
   detail,
+  emoji,
   icon: Icon,
+  tone = "yellow",
+  tack = "#ff4d4d",
+  rotate = 0,
 }: {
   label: string;
   value: string;
-  detail: string;
-  icon: LucideIcon;
+  detail?: string;
+  emoji?: string;
+  icon?: LucideIcon;
+  tone?: StatTone;
+  tack?: string;
+  rotate?: number;
 }) {
   return (
-    <Surface
-      className="h-full min-h-[158px] overflow-hidden p-5 transition-transform duration-100 hover:-translate-y-0.5 md:min-h-[168px] md:p-6"
-      decoration="none"
+    <div
+      className="relative h-full border-[3px] border-[var(--border)] px-3.5 pb-4 pt-4 wobbly-note"
+      style={{
+        background: tones[tone] ?? tones.yellow,
+        boxShadow: "3px 3px 0 var(--border)",
+        transform: rotate ? `rotate(${rotate}deg)` : undefined,
+      }}
     >
-      <div className="flex h-full items-start justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--muted)]">{label}</p>
-          <p className="mt-3 text-[1.8rem] leading-none text-[var(--foreground)] md:text-[2.2rem]">
-            {value}
-          </p>
-          <p className="mt-3 text-xs leading-5 text-[var(--muted)]">{detail}</p>
-        </div>
-        <div className="ink-icon shrink-0 p-2.5 text-[var(--foreground)]">
-          <Icon className="h-4.5 w-4.5" strokeWidth={2.7} />
-        </div>
+      <span
+        aria-hidden
+        className="absolute left-1/2 top-[-9px] h-4 w-4 -translate-x-1/2 rounded-full border-[2.5px] border-[var(--border)]"
+        style={{ background: tack, boxShadow: "1.5px 1.5px 0 var(--border)" }}
+      />
+      <div className="text-[26px] leading-none">
+        {emoji ? emoji : Icon ? <Icon className="h-6 w-6" strokeWidth={2.6} /> : null}
       </div>
-    </Surface>
+      <div className="mt-2 font-display text-[25px] font-bold leading-[1.05] text-[var(--foreground)]">
+        {value}
+      </div>
+      <div className="mt-1 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[var(--label)]">
+        {label}
+      </div>
+      {detail ? <div className="mt-1.5 text-[12px] font-bold text-[#6b655c]">{detail}</div> : null}
+    </div>
   );
 }
