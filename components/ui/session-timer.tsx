@@ -4,9 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Play, Square, TimerReset } from "lucide-react";
 
 import { ReadingReceiptModal } from "@/components/ui/reading-receipt-modal";
-import { RoughButton } from "@/components/ui/rough-button";
 import { RoughInput, RoughSelect } from "@/components/ui/rough-field";
-import { Surface } from "@/components/ui/surface";
 import type { ReadingReceipt } from "@/lib/types";
 
 type SessionTimerProps = {
@@ -77,88 +75,90 @@ export function SessionTimer({ bookId, initialPage }: SessionTimerProps) {
 
   return (
     <>
-      <Surface className="p-6 md:p-8" decoration="none">
-        <div className="flex items-start justify-between gap-4">
-          <p className="inline-block border-2 border-[var(--border)] bg-[var(--surface-postit)] px-3 py-1 text-[11px] uppercase tracking-[0.18em] hard-shadow-soft wobbly-note">
-            Live session
-          </p>
-          <div
-            className={`wobbly-md border-2 px-3 py-1 text-[11px] uppercase tracking-[0.18em] ${
-              running
-                ? "border-[var(--border)] bg-[var(--accent)] text-white hard-shadow-soft"
-                : "border-[var(--border)] bg-white text-[var(--muted)]"
-            }`}
-          >
-            {running ? "Session active" : "Ready to start"}
+      <section
+        className="relative overflow-hidden border-[3px] border-[var(--border)] bg-[var(--border)] px-5 py-5 wobbly-md md:px-6"
+        style={{ boxShadow: "5px 5px 0 rgba(45,45,45,0.35)" }}
+      >
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div
+              className="flex h-[54px] w-[54px] items-center justify-center rounded-full border-[3px] text-[26px]"
+              style={{ borderColor: "#fff9c4", background: "rgba(255,255,255,0.06)" }}
+            >
+              ⏱️
+            </div>
+            <div>
+              <div className="text-[11px] font-extrabold uppercase tracking-[0.2em]" style={{ color: "#ffd6e8" }}>
+                Reading session
+              </div>
+              <div className="font-display text-[40px] font-bold leading-none tracking-[0.02em] text-white">
+                {durationLabel}
+              </div>
+              <div className="mt-0.5 text-[13px] font-bold" style={{ color: "rgba(255,255,255,0.66)" }}>
+                on page {endPage} · {running ? "keep going, you've got this 💪" : "ready when you are ✨"}
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <button
+              type="button"
+              onClick={() => setRunning((value) => !value)}
+              className="inline-flex items-center gap-1.5 rounded-[18px] border-[3px] border-[var(--border)] px-5 py-2.5 text-[15px] font-extrabold text-[var(--foreground)]"
+              style={{ background: running ? "#ffd6e8" : "#fff9c4", boxShadow: "3px 3px 0 #000" }}
+            >
+              <Play className="h-4 w-4" strokeWidth={2.7} />
+              {running ? "Pause" : "Start"}
+            </button>
+            <button
+              type="button"
+              onClick={endSession}
+              className="inline-flex items-center gap-1.5 rounded-[18px] border-[3px] px-4 py-2.5 text-[14px] font-extrabold"
+              style={{ borderColor: "#fff9c4", color: "#fff9c4", background: "transparent" }}
+            >
+              <Square className="h-4 w-4" strokeWidth={2.7} />
+              End
+            </button>
+            <button
+              type="button"
+              onClick={reset}
+              className="inline-flex items-center gap-1.5 rounded-[18px] border-[3px] px-4 py-2.5 text-[14px] font-extrabold"
+              style={{ borderColor: "rgba(255,255,255,0.4)", color: "rgba(255,255,255,0.75)", background: "transparent" }}
+            >
+              <TimerReset className="h-4 w-4" strokeWidth={2.7} />
+              Reset
+            </button>
           </div>
         </div>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm text-[var(--muted)]">Today’s focused reading time</p>
-          <p className="mt-3 text-6xl leading-none text-[var(--foreground)] md:text-7xl">
-            {durationLabel}
-          </p>
-        </div>
-
-        <div className="mt-6 grid gap-3 md:grid-cols-[1.2fr_1fr_1fr]">
-          <RoughButton
-            type="button"
-            onClick={() => setRunning((value) => !value)}
-            className={`min-h-14 text-base md:text-lg ${
-              running
-                ? "bg-[var(--surface-postit)]"
-                : "bg-[var(--accent)] text-white hover:bg-[var(--foreground)]"
-            }`}
-          >
-            <Play className="h-4.5 w-4.5" strokeWidth={2.7} />
-            {running ? "Pause session" : "Start session"}
-          </RoughButton>
-          <RoughButton
-            type="button"
-            onClick={endSession}
-            variant="secondary"
-            className="min-h-14 text-base"
-          >
-            <Square className="h-4.5 w-4.5" strokeWidth={2.7} />
-            End session
-          </RoughButton>
-          <RoughButton
-            type="button"
-            onClick={reset}
-            variant="ghost"
-            className="min-h-14 text-base"
-          >
-            <TimerReset className="h-4.5 w-4.5" strokeWidth={2.7} />
-            Reset
-          </RoughButton>
-        </div>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <div className="mt-4 grid gap-3 rounded-[16px] border-2 border-[rgba(255,255,255,0.14)] bg-[rgba(255,255,255,0.05)] p-3.5 sm:grid-cols-3">
           <label className="block">
-            <span className="text-sm uppercase tracking-[0.14em] text-[var(--muted)]">Start page</span>
+            <span className="text-[11px] font-extrabold uppercase tracking-[0.14em]" style={{ color: "rgba(255,255,255,0.6)" }}>
+              Start page
+            </span>
             <RoughInput
-              className="mt-2 min-h-12 text-base"
+              className="mt-1.5 min-h-11 text-base"
               type="number"
               value={startPage}
               onChange={(event) => setStartPage(Number(event.target.value))}
             />
           </label>
           <label className="block">
-            <span className="text-sm uppercase tracking-[0.14em] text-[var(--muted)]">End page</span>
+            <span className="text-[11px] font-extrabold uppercase tracking-[0.14em]" style={{ color: "rgba(255,255,255,0.6)" }}>
+              End page
+            </span>
             <RoughInput
-              className="mt-2 min-h-12 text-base"
+              className="mt-1.5 min-h-11 text-base"
               type="number"
               value={endPage}
               onChange={(event) => setEndPage(Number(event.target.value))}
             />
           </label>
-        </div>
-
-        <div className="mt-4">
           <label className="block">
-            <span className="text-sm uppercase tracking-[0.14em] text-[var(--muted)]">Mood</span>
+            <span className="text-[11px] font-extrabold uppercase tracking-[0.14em]" style={{ color: "rgba(255,255,255,0.6)" }}>
+              Mood
+            </span>
             <RoughSelect
-              className="mt-2 min-h-12 text-base"
+              className="mt-1.5 min-h-11 text-base"
               value={mood}
               onChange={(event) => setMood(event.target.value)}
             >
@@ -170,7 +170,7 @@ export function SessionTimer({ bookId, initialPage }: SessionTimerProps) {
             </RoughSelect>
           </label>
         </div>
-      </Surface>
+      </section>
 
       {receipt ? <ReadingReceiptModal receipt={receipt} onClose={() => setReceipt(null)} /> : null}
     </>
